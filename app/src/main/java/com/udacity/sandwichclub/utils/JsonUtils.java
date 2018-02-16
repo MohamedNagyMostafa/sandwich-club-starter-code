@@ -29,11 +29,12 @@ public class JsonUtils {
         try {
             JSONObject jsonObject = new JSONObject(json);
             JSONObject nameJsonObject = jsonObject.getJSONObject(NAME);
-
-            imageUrl = jsonObject.getString(IMAGE);
-            mainName = nameJsonObject.getString(MAIN_NAME);
-            description = jsonObject.getString(DESCRIPTION);
-            placeOfOrigin = jsonObject.getString(PLACE_OF_ORIGIN);
+            /// optString(IMAGE) if there's no value returns empty string.
+            /// when have check every node if it exits at json object using .has(nodeName);
+            imageUrl = jsonObject.optString(IMAGE);
+            mainName = nameJsonObject.optString(MAIN_NAME);
+            description = jsonObject.optString(DESCRIPTION);
+            placeOfOrigin = jsonObject.optString(PLACE_OF_ORIGIN);
 
             alsoKnownAsList = jsonArrayFilter(nameJsonObject.getJSONArray(ALSO_KNOWN_AS));
             ingredientsList = jsonArrayFilter(jsonObject.getJSONArray(INGREDIENTS));
@@ -61,5 +62,9 @@ public class JsonUtils {
         }
 
         return stringList;
+    }
+
+    private boolean checkNode(JSONObject jsonObject, String nodeName){
+        return jsonObject.has(nodeName);
     }
 }
